@@ -1,8 +1,7 @@
 from tkinter import Tk, Label, Label, Button, Frame, OptionMenu, StringVar
 from time import sleep
 
-import threading
-import keyboard
+import threading, keyboard
 import pydirectinput as pyd
 
 
@@ -57,7 +56,7 @@ class Clicker:
                 elif self.clickOption == "Right":
                     pyd.rightClick()
             else:
-                sleep(self.coolDown)
+                sleep(0.01)
 
     
     def stop(self):
@@ -71,62 +70,65 @@ class Interface(Frame):
 
         self.clicker = Clicker()
 
-        parent.title("Clykr V1")
+        self.config(
+            bg="#000000",
+            padx=20,
+            pady=20
+        )
+
+        parent.title("Clykr V2")
         parent.geometry("220x200")
 
+        self.dropdowns = []
+        self.labels = []
 
-        self.triggerLabel = Label(self, text="Trigger (s):")
+
+        self.triggerLabel = Label(self, text="Trigger (s):", bg="#000000", fg="#FEF6E5")
         self.triggerLabel.grid(row=1, column=1)
 
         self.triggerValue = StringVar(self, "E")
-
         self.triggerOption = OptionMenu(
             self, 
             self.triggerValue,
-            *list("QWERTYUIOPASDFGHJJKZXCVBNM1234567890"))
-        self.triggerOption.config(width=8)
-        self.triggerOption.grid(row=1, column=2)
+            *list("QWERTYUIOPASDFGHJJKZXCVBNM1234567890")
+        )
+        self.dropdowns.append(self.triggerOption)
+        self.triggerOption.grid(row=1, column=2, pady=5)
 
 
 
-        self.coolDownLabel = Label(self, text="Cooldown (s):")
+        self.coolDownLabel = Label(self, text="Cooldown (s):", bg="#000000", fg="#FEF6E5")
         self.coolDownLabel.grid(row=2, column=1)
 
         self.coolDownValue = StringVar(self, 0.01)
-
         self.coolDownOption = OptionMenu(
             self, 
             self.coolDownValue,
-            *[0.01,
-            0.05,
-            0.1,
-            0.5,
-            1])
-        self.coolDownOption.config(width=8)
-        self.coolDownOption.grid(row=2, column=2)
+            *[0.01, 0.05, 0.1, 0.5, 1]
+        )
+        self.dropdowns.append(self.coolDownOption)
+        self.coolDownOption.grid(row=2, column=2, pady=5)
 
 
 
-        self.modeLabel = Label(self, text="Mode:")
+        self.modeLabel = Label(self, text="Mode:", bg="#000000", fg="#FEF6E5")
         self.modeLabel.grid(row=3, column=1)
 
         self.modeValue = StringVar(self, "Default")
-
         self.modeOption = OptionMenu(
             self, 
             self.modeValue,
             *["Default",
             "Toggle"])
-        self.modeOption.config(width=8)
-        self.modeOption.grid(row=3, column=2)
+        self.dropdowns.append(self.modeOption)
+        self.modeOption.grid(row=3, column=2, pady=5)
 
 
 
-        self.mouseLabel = Label(self, text="Mouse:")
+        self.mouseLabel = Label(self, text="Mouse:", bg="#000000", fg="#FEF6E5")
         self.mouseLabel.grid(row=4, column=1)
 
         self.mouseValue = StringVar(self, "Left")
-
         self.mouseOption = OptionMenu(
             self, 
             self.mouseValue,
@@ -134,13 +136,41 @@ class Interface(Frame):
             "Middle",
             "Right"],
         )
-        self.mouseOption.config(width=8)
-        self.mouseOption.grid(row=4, column=2)
+        self.dropdowns.append(self.mouseOption)
+        self.mouseOption.grid(row=4, column=2, pady=5)
 
 
+
+        for d in self.dropdowns:
+            d.config(
+                width=8,
+                bg="#484848", 
+                fg="#FEF6E5",
+                activebackground="#8A37D4", 
+                activeforeground="#ffffff",
+                highlightthickness=0,
+                border=0
+            )
+
+            menu = d["menu"]
+            menu.config(
+                bg="#000000", 
+                fg="#ffffff", 
+                activebackground="#8A37D4", 
+                activeforeground="#ffffff"
+            )
+        
 
         self.startBtn = Button(self, text="Start", command=self.startClicker)
-        self.startBtn.grid(row=5, column=1)
+        self.startBtn.config(
+            border=0,
+            padx=20,
+            bg="#8A37D4",
+            fg="#ffffff",
+            activebackground="#484848", 
+            activeforeground="#ffffff"
+        )
+        self.startBtn.grid(row=5, column=1, pady=5)
 
     def startClicker(self):
         self.clicker.start(
@@ -165,5 +195,9 @@ class Interface(Frame):
 
 
 root = Tk()
+root.config(bg="#000000")
+root.resizable(width=False, height=False)
+root.iconbitmap("icon.ico")
+
 Interface(root).grid(row=1, column=1)
 root.mainloop()
