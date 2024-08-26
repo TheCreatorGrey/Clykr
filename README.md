@@ -1,6 +1,5 @@
-This is Clykr V1:
-An autoclicker made in Python and bundled 
-in a crusty TK interface.
+This is Clykr V2:
+An autoclicker made with Python.
 
 
 There are some configuration options in the menu:
@@ -19,4 +18,6 @@ Mouse - The button on the mouse to be clicked
 
 
 You need to click the button on the bottom
-to start the autoclicker.
+to start the autoclicker. If you update the
+configuration, the autoclicker must be stopped
+then started again.
